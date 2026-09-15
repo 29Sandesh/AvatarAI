@@ -1,0 +1,56 @@
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+backend/venv/
+venv/
+ENV/
+env/
+*.egg-info/
+.pytest_cache/
+
+# Model weights & Checkpoints (Exceed GitHub 100MB file limit)
+backend/models/*.onnx
+backend/models/*.bin
+backend/engines/SadTalker/checkpoints/
+backend/engines/SadTalker/gfpgan/
+backend/engines/SadTalker/src/config/BFM_Fitting/
+*.safetensors
+*.pth
+*.pth.tar
+*.mat
+*.bin
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# Media & Generated Outputs
+backend/uploads/
+*.mp4
+*.wav
+*.mp3
+
+# Frontend
+frontend/node_modules/
+node_modules/
+frontend/dist/
+frontend/.vite/
+dist/
+.vite/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment & Secrets
+.env
+.env.local
+.env.*.local
