@@ -1,65 +1,98 @@
-﻿# AvatarAI — Talking Avatar Studio
+﻿# AvatarAI — Talking Avatar Studio 🎬
 
-A full-stack, local AI studio application that transforms static portrait photos into realistic, lip-synced talking avatar videos using ultra-realistic neural text-to-speech and AI head animation.
-
----
-
-## 🌟 Key Features
-
-- **📸 Instant Avatar Upload & Face Animation**: Upload any portrait photo or choose from curated presets. The system detects facial landmarks and animates realistic lip movements, expressions, and natural head motion.
-- **🎙️ Ultra-Realistic Neural Speech Synthesis**:
-  - Studio-grade voices via Edge Neural TTS (`Guy`, `Jenny`, `Prabhat` for Indian English, `Neerja`).
-  - Offline local fallback using the lightweight Kokoro ONNX model (82M parameters).
-  - Fast generation (< 2 seconds for full phrases).
-- **🎬 Dual Animation Engine**:
-  - **SadTalker Deep Animation**: 3D Morphable Model (BFM) + Exp_Pca facial landmark motion generation.
-  - **Smart Fallback Engine**: Dynamic zoom/pan motion video generation with perfect audio sync if GPU or timeout occurs.
-- **💻 Modern Dark/Light Studio UI**:
-  - React + Vite responsive frontend with live script editor, voice selector, avatar gallery, and real-time generation progress monitor.
-  - Automatic backend health tracking and instant reconnect.
-- **⚡ Production-Ready Windows & Linux Scripts**: One-click launchers (`start_all.bat`, `run_backend.bat`, `run_frontend.bat`).
+> Transform any portrait photo into a realistic, lip-synced talking avatar video with ultra-realistic neural speech synthesis and local AI face animation.
 
 ---
 
-## 🛠️ Architecture & Tech Stack
+## 🌟 Overview & Highlights
 
-### Frontend
-- **Framework**: React 19, Vite
-- **Styling**: Modern dark mode UI, CSS Grid & Flexbox, sleek glassmorphism
-- **API Client**: Axios
-
-### Backend
-- **Framework**: FastAPI (Python 3.12 / 3.11)
-- **Speech Engine**: Microsoft Edge-TTS + Kokoro ONNX (82M parameters)
-- **Face Animation Engine**: SadTalker (PyTorch + FaceXLib + 3DMM BFM Fitting) + FFmpeg
-- **Audio Processing**: SoundFile, PyDub, Librosa, Soxr
+- **📸 Instant Avatar Creation**: Upload any face/portrait image or select from gallery presets. The pipeline automatically detects facial landmarks and generates natural head movement, blinking, and lip-syncing.
+- **🎙️ Ultra-Realistic Studio Voices (Zero Robotic Tone)**:
+  - **`Guy`** *(Ultra-Realistic, Natural American Male)* — **Default**
+  - **`Jenny`** *(Natural, Friendly American Female)*
+  - **`Prabhat`** *(Natural Indian-English Male)*
+  - **`Neerja`** *(Expressive Indian-English Female)*
+  - *Fallback Local Kokoro ONNX Voices*: Sofia, James, Emma (82M offline parameter model).
+- **🧠 Dual AI Engine**:
+  - **SadTalker 3D Morphable Model (BFM)**: Full face landmark animation and lip synchronization.
+  - **Smart Fallback Engine**: High-fidelity dynamic camera motion (zoom/pan) with sub-second audio sync if deep render times out.
+- **💻 Modern Studio Interface**:
+  - Dark/Light mode React 19 UI with live script editor, voice auditioning, avatar selector, and real-time generation progress.
+- **⚡ Cross-Platform**: Fully configured for **macOS (Apple Silicon M1/M2/M3/M4 & Intel)**, **Windows 10/11**, and **Linux**.
 
 ---
 
-## 🚀 Getting Started
+## 🍎 Quick Start Guide for macOS (MacBook Pro / Air)
 
-### 1. Prerequisites
-- **Python**: 3.10, 3.11, or 3.12
-- **Node.js**: 18+ and npm
-- **FFmpeg**: Installed and added to system PATH
+Follow these simple steps in your **Terminal**.
 
-### 2. Quick Launch (Windows)
-Double-click `start_all.bat` or run:
+### Step 1: Install System Prerequisites (Homebrew)
+
+If you don't have [Homebrew](https://brew.sh) installed yet, install it by pasting this into Terminal:
 ```bash
-.\start_all.bat
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
-This automatically launches both the FastAPI backend (`http://127.0.0.1:8000`) and the Vite frontend (`http://localhost:5173`).
 
-### 3. Manual Launch
+Then install **Python 3.11**, **Node.js**, and **FFmpeg**:
+```bash
+brew install python@3.11 node ffmpeg
+```
 
-#### Backend:
+---
+
+### Step 2: Clone the Repository & Run Automated Setup
+
+In Terminal, navigate to your desired directory and run:
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/29Sandesh/AvatarAI.git
+cd AvatarAI
+
+# 2. Make scripts executable
+chmod +x *.sh
+
+# 3. Run the automated 1-click setup script
+./setup_mac.sh
+```
+
+> **What `./setup_mac.sh` does automatically:**
+> 1. Verifies `python3`, `node`, `npm`, and `ffmpeg`.
+> 2. Creates and activates the Python virtual environment (`backend/venv`).
+> 3. Installs all backend Python packages (`pip install -r backend/requirements.txt`).
+> 4. Installs frontend packages (`npm install` inside `frontend/`).
+> 5. Downloads all required AI models and checkpoints into their exact folders (`python3 backend/download_models.py`).
+
+---
+
+### Step 3: Launch AvatarAI Studio
+
+Once setup finishes, start both the backend and frontend with **one command**:
+
+```bash
+./start_all.sh
+```
+
+Open your browser and navigate to:
+👉 **[http://localhost:5173](http://localhost:5173)**
+
+---
+
+### Manual Launch on macOS (Alternative)
+
+If you prefer to run the backend and frontend in separate Terminal tabs:
+
+#### Tab 1 — Backend:
 ```bash
 cd backend
+python3 -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
-python -m uvicorn main:app --host 127.0.0.1 --port 8000 --reload
+python3 download_models.py
+uvicorn main:app --host 127.0.0.1 --port 8000 --reload
 ```
 
-#### Frontend:
+#### Tab 2 — Frontend:
 ```bash
 cd frontend
 npm install
@@ -68,33 +101,130 @@ npm run dev
 
 ---
 
+## 🪟 Quick Start Guide for Windows
+
+1. **Prerequisites**:
+   - Python 3.10, 3.11, or 3.12 (check "Add Python to PATH" during installation)
+   - Node.js 18+ ([nodejs.org](https://nodejs.org))
+   - FFmpeg installed and in your system PATH
+
+2. **Setup & Download Models**:
+   Open PowerShell or Command Prompt in the project folder:
+   ```powershell
+   pip install -r backend\requirements.txt
+   npm --prefix frontend install
+   python backend\download_models.py
+   ```
+
+3. **Launch**:
+   Double-click `start_all.bat` or run:
+   ```powershell
+   .\start_all.bat
+   ```
+   Or run individually:
+   - Backend: `.\run_backend.bat`
+   - Frontend: `.\run_frontend.bat`
+
+---
+
+## 🧠 Downloading AI Model Checkpoints Manually
+
+The project comes with a built-in cross-platform downloader (`backend/download_models.py`).
+To download or verify all checkpoints at any time, run:
+
+```bash
+python3 backend/download_models.py
+```
+
+### Models Downloaded:
+| Model Component | Target Location | Description |
+|---|---|---|
+| **Kokoro ONNX** | `backend/models/kokoro-v1.0.onnx` | 82M offline TTS model |
+| **Kokoro Voices** | `backend/models/voices-v1.0.bin` | Voice embeddings |
+| **SadTalker 256** | `backend/engines/SadTalker/checkpoints/SadTalker_V0.0.2_256.safetensors` | Facial animation model |
+| **SadTalker Mapping** | `backend/engines/SadTalker/checkpoints/mapping_*.pth.tar` | Audio-to-expression mapping |
+| **3DMM BFM Fitting** | `backend/engines/SadTalker/checkpoints/BFM_Fitting/` | 3D Morphable Model basis |
+| **FaceXLib Weights** | `backend/engines/SadTalker/gfpgan/weights/` | Facial alignment & landmark detection |
+
+---
+
+## 🎯 How to Use the Studio
+
+1. **Select / Upload Avatar**:
+   - In the left sidebar, select **Avatar**.
+   - Pick an existing preset or click **+ Upload Avatar** to upload a clear portrait photo of anyone.
+2. **Choose Voice**:
+   - Click **Voice** in the toolbar.
+   - Choose **Guy (Ultra-Realistic)**, **Jenny**, **Prabhat**, or **Neerja**.
+   - Click the `▶` play button next to any voice to preview how natural it sounds.
+3. **Write Your Script**:
+   - Type or paste your desired script into the **Script Editor** box on the Avatar screen.
+   - (Optional) Click **✦ AI Script Writer** under AI Tools to auto-generate sample scripts.
+4. **Generate Video**:
+   - Click the glowing **⚡ Generate Video** button in the top right.
+   - Watch the live progress bar as it generates speech audio, detects facial landmarks, and renders the talking video.
+   - Play or download your completed MP4 video!
+
+---
+
 ## 📁 Repository Structure
 
 ```
-AvatarCopy-main/
+AvatarAI/
+├── setup_mac.sh                # 🍎 1-Click Automated Setup for MacBook / macOS
+├── start_all.sh                # 🍎 Launch both servers on macOS / Linux
+├── run_backend.sh              # 🍎 Launch backend only on macOS / Linux
+├── run_frontend.sh             # 🍎 Launch frontend only on macOS / Linux
+├── start_all.bat               # 🪟 1-Click Launch for Windows
+├── run_backend.bat             # 🪟 Launch backend only on Windows
+├── run_frontend.bat            # 🪟 Launch frontend only on Windows
 ├── backend/
+│   ├── download_models.py      # Automated cross-platform model downloader
 │   ├── engines/
-│   │   └── SadTalker/          # SadTalker inference pipeline
-│   ├── models/                 # Lightweight ONNX model directory
-│   ├── routers/                # FastAPI endpoint routers
+│   │   └── SadTalker/          # SadTalker 3D face animation engine
+│   ├── models/                 # ONNX TTS model directory
+│   ├── routers/                # FastAPI endpoints
 │   ├── services/
-│   │   ├── avatar_service.py   # SadTalker & video synthesis pipeline
-│   │   ├── tts_service.py      # Edge-TTS & Kokoro TTS engine
-│   │   └── project_service.py  # Project history & state management
-│   ├── uploads/                # Local storage for avatars and outputs
-│   ├── main.py                 # FastAPI application entrypoint
+│   │   ├── avatar_service.py   # Video generation & SadTalker pipeline
+│   │   ├── tts_service.py      # Edge-TTS & Kokoro neural speech service
+│   │   └── project_service.py  # Projects and history management
+│   ├── uploads/                # Local avatar uploads and generated MP4s
+│   ├── main.py                 # FastAPI server entrypoint
 │   └── requirements.txt        # Python dependencies
 ├── frontend/
-│   ├── src/                    # React Studio interface
-│   ├── package.json            # Frontend packages & scripts
-│   └── vite.config.js          # Vite configuration
-├── start_all.bat               # One-click full-stack launcher
-├── run_backend.bat             # Backend launcher script
-├── run_frontend.bat            # Frontend launcher script
-└── README.md                   # Project documentation
+│   ├── src/
+│   │   ├── App.jsx             # Main Studio interface & player
+│   │   ├── App.css             # Modern dark/light styling
+│   │   └── main.jsx            # React root
+│   ├── package.json            # Node.js dependencies
+│   └── vite.config.js          # Vite config
+└── README.md                   # Full documentation & setup guide
 ```
 
 ---
 
-## 🛡️ License
-MIT License. Built for local AI experimentation and content creation.
+## 🔧 Troubleshooting on macOS
+
+- **Permission Denied when running `.sh` scripts?**
+  Run:
+  ```bash
+  chmod +x *.sh
+  ```
+- **"ffmpeg: command not found"?**
+  Run:
+  ```bash
+  brew install ffmpeg
+  ```
+- **Port 8000 or 5173 already in use?**
+  Check and stop previous processes:
+  ```bash
+  lsof -i :8000 | awk 'NR>1 {print $2}' | xargs kill -9
+  lsof -i :5173 | awk 'NR>1 {print $2}' | xargs kill -9
+  ```
+- **Apple Silicon (M1/M2/M3/M4) Acceleration**:
+  PyTorch automatically utilizes CPU / MPS on macOS. The SadTalker and TTS engines are configured to run natively without requiring external cloud keys.
+
+---
+
+## 📄 License
+MIT License. Built for local AI experimentation and media creation.
